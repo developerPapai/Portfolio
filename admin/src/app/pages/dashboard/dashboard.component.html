@@ -1,0 +1,141 @@
+<div class="max-w-6xl mx-auto">
+  <h1 class="text-3xl font-bold mb-8">Dashboard Overview</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    <div class="bg-card p-6 rounded-xl border border-border transition-all hover:border-accent/30 shadow-card">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-text-muted text-sm mb-1 uppercase tracking-wider font-semibold">Total Projects</p>
+          <h3 class="text-3xl font-bold text-accent">{{ stats.projects }}</h3>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-card p-6 rounded-xl border border-border transition-all hover:border-success/30 shadow-card">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-text-muted text-sm mb-1 uppercase tracking-wider font-semibold">Skills</p>
+          <h3 class="text-3xl font-bold text-success">{{ stats.skills }}</h3>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-success/10 flex items-center justify-center text-success">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-card p-6 rounded-xl border border-border transition-all hover:border-warning/30 shadow-card">
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="text-text-muted text-sm mb-1 uppercase tracking-wider font-semibold">New Messages</p>
+          <h3 class="text-3xl font-bold text-warning">{{ stats.unreadMessages }}</h3>
+        </div>
+        <div class="w-12 h-12 rounded-lg bg-warning/10 flex items-center justify-center text-warning">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Section -->
+  <div class="space-y-6">
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold">Visitor Analytics</h2>
+      <button (click)="fetchAnalytics()" class="btn-outline px-4 py-1.5 text-xs rounded-full">
+        Refresh Data
+      </button>
+    </div>
+
+    <div *ngIf="isLoadingAnalytics" class="flex justify-center p-12 bg-card rounded-xl border border-border">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+    </div>
+
+    <div *ngIf="!isLoadingAnalytics && analytics" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <!-- High Level Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-card border border-border p-6 rounded-xl text-center hover:bg-secondary/50 transition-colors">
+          <p class="text-text-muted text-xs uppercase tracking-wider mb-2 font-medium">Total Visitors</p>
+          <p class="text-3xl font-bold text-accent">{{ analytics.totalVisitors }}</p>
+        </div>
+        <div class="bg-card border border-border p-6 rounded-xl text-center hover:bg-secondary/50 transition-colors">
+          <p class="text-text-muted text-xs uppercase tracking-wider mb-2 font-medium">Page Views</p>
+          <p class="text-3xl font-bold text-accent">{{ analytics.totalPageViews }}</p>
+        </div>
+        <div class="bg-card border border-border p-6 rounded-xl text-center hover:bg-secondary/50 transition-colors">
+          <p class="text-text-muted text-xs uppercase tracking-wider mb-2 font-medium">Avg. Views/User</p>
+          <p class="text-3xl font-bold text-accent">{{ (analytics.totalPageViews / (analytics.totalVisitors || 1)).toFixed(1) }}</p>
+        </div>
+        <div class="bg-card border border-border p-6 rounded-xl text-center hover:bg-secondary/50 transition-colors">
+          <p class="text-text-muted text-xs uppercase tracking-wider mb-2 font-medium">Platform</p>
+          <p class="text-xl font-bold text-accent">Active</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Devices -->
+        <div class="bg-card border border-border rounded-xl p-6">
+          <h3 class="text-lg font-semibold mb-6 flex items-center justify-between">
+            <span>Devices</span>
+            <span class="text-xs text-text-muted font-normal">By Session</span>
+          </h3>
+          <div class="space-y-6">
+            <div *ngFor="let device of analytics.deviceStats" class="space-y-2">
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-text-primary capitalize">{{ device._id }}</span>
+                <span class="font-mono text-text-muted">{{ device.count }} ({{ (device.count / analytics.totalVisitors * 100).toFixed(0) }}%)</span>
+              </div>
+              <div class="h-1.5 bg-border rounded-full overflow-hidden">
+                <div class="h-full bg-accent transition-all duration-1000 ease-out" [style.width.%]="(device.count / analytics.totalVisitors) * 100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Browsers -->
+        <div class="bg-card border border-border rounded-xl p-6">
+          <h3 class="text-lg font-semibold mb-6 flex items-center justify-between">
+            <span>Browsers</span>
+            <span class="text-xs text-text-muted font-normal">Usage</span>
+          </h3>
+          <div class="space-y-6">
+            <div *ngFor="let browser of analytics.browserStats" class="space-y-2">
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-text-primary">{{ browser._id }}</span>
+                <span class="font-mono text-text-muted">{{ browser.count }}</span>
+              </div>
+              <div class="h-1.5 bg-border rounded-full overflow-hidden">
+                <div class="h-full bg-success transition-all duration-1000 ease-out" [style.width.%]="(browser.count / analytics.totalVisitors) * 100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Pages -->
+        <div class="bg-card border border-border rounded-xl p-6">
+          <h3 class="text-lg font-semibold mb-6 flex items-center justify-between">
+            <span>Popular Content</span>
+            <span class="text-xs text-text-muted font-normal">Page Views</span>
+          </h3>
+          <div class="space-y-4">
+            <div *ngFor="let page of analytics.topPages" class="flex items-center justify-between p-2 hover:bg-secondary/30 rounded-lg transition-colors">
+              <span class="text-text-muted text-sm truncate max-w-[150px]">{{ page._id === '/' ? 'Home' : page._id }}</span>
+              <span class="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded-md">{{ page.count }} views</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoadingAnalytics && !analytics" class="p-12 text-center bg-card rounded-xl border border-border">
+      <p class="text-text-muted">No analytics data available yet. Visits will be tracked as users interact with your portfolio.</p>
+    </div>
+  </div>
+</div>

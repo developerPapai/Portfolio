@@ -1,0 +1,42 @@
+<section class="min-h-screen py-24">
+  <div class="container-custom">
+    <!-- Header -->
+    <div class="mb-16">
+      <a routerLink="/" class="inline-flex items-center gap-2 text-accent hover:text-accent-light transition-colors mb-6 group">
+        <i class="fas fa-arrow-left transition-transform group-hover:-translate-x-1"></i> Back to Home
+      </a>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Archive</h1>
+      <p class="text-lg text-text-muted max-w-2xl">A complete collection of my projects, experiments, and open-source contributions.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-3 mb-10">
+      <button
+        *ngFor="let cat of categories"
+        (click)="setCategory(cat.value)"
+        class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
+        [ngClass]="activeCategory === cat.value ? 'bg-accent/20 text-accent border border-accent/50' : 'bg-secondary text-text-muted border border-border hover:border-accent/40'">
+        {{ cat.label }}
+      </button>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <ng-container *ngIf="!loading; else loadingState">
+        <div *ngFor="let project of filteredProjects" class="gsap-project-item">
+          <app-project-card [project]="project"></app-project-card>
+        </div>
+      </ng-container>
+
+      <ng-template #loadingState>
+        <div class="col-span-full py-20 text-center text-text-muted">
+          Loading projects...
+        </div>
+      </ng-template>
+
+      <div *ngIf="!loading && filteredProjects.length === 0" class="col-span-full py-20 text-center text-text-muted">
+        No projects found for this category.
+      </div>
+    </div>
+  </div>
+</section>

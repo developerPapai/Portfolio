@@ -1,0 +1,32 @@
+<div class="max-w-4xl mx-auto">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold">Skills Management</h1>
+    <button (click)="openAddDialog()" class="bg-accent text-black px-4 py-2 rounded font-bold hover:bg-accent/90 transition-colors">
+      <i class="fas fa-plus mr-2"></i> Add Skill
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="flex justify-center p-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+  </div>
+
+  <div *ngIf="!isLoading" class="space-y-8">
+    <div *ngFor="let category of categories" class="bg-card border border-border rounded-xl p-6">
+      <h2 class="text-xl font-bold text-accent mb-4 capitalize">{{ category }}</h2>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div *ngFor="let skill of getSkillsByCategory(category)" class="bg-secondary border border-border-subtle rounded-lg p-3 flex justify-between items-center group">
+          <div class="flex items-center gap-2 cursor-pointer hover:text-accent transition-colors" (click)="openEditDialog(skill)">
+            <i *ngIf="skill.icon" [class]="skill.icon"></i>
+            <span class="font-medium text-sm">{{ skill.name }}</span>
+          </div>
+          <button (click)="deleteSkill(skill._id)" class="text-text-muted hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-skill-dialog *ngIf="showDialog" [skill]="selectedSkill" (close)="closeDialog()" (save)="saveSkill($event)"></app-skill-dialog>
+</div>

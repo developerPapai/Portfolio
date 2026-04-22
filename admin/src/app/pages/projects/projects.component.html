@@ -1,0 +1,31 @@
+<div class="max-w-6xl mx-auto">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold">Projects Management</h1>
+    <button (click)="openAddDialog()" class="bg-accent text-black px-4 py-2 rounded font-bold hover:bg-accent/90 transition-colors">
+      <i class="fas fa-plus mr-2"></i> Add Project
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="flex justify-center p-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+  </div>
+
+  <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let project of projects" class="bg-card border border-border rounded-xl overflow-hidden flex flex-col">
+      <div class="h-40 bg-secondary relative">
+        <img *ngIf="project.imageUrl" [src]="project.imageUrl" class="w-full h-full object-cover">
+        <div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-1 rounded text-xs font-bold">{{ project.category }}</div>
+      </div>
+      <div class="p-4 flex-grow flex flex-col">
+        <h3 class="text-lg font-bold mb-2">{{ project.title }}</h3>
+        <p class="text-text-muted text-sm line-clamp-2 mb-4">{{ project.description }}</p>
+        <div class="mt-auto flex justify-between">
+          <button (click)="openEditDialog(project)" class="text-accent hover:underline text-sm font-medium">Edit</button>
+          <button (click)="deleteProject(project._id)" class="text-danger hover:underline text-sm font-medium">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-project-dialog *ngIf="showDialog" [project]="selectedProject" (close)="closeDialog()" (save)="saveProject($event)"></app-project-dialog>
+</div>

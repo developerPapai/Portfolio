@@ -1,0 +1,33 @@
+<div class="card h-full flex flex-col overflow-hidden group">
+  <!-- Project Image -->
+  <div class="relative h-48 overflow-hidden bg-secondary">
+    <div class="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
+    <img *ngIf="project.imageUrl" [src]="project.imageUrl" [alt]="project.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+    <div *ngIf="!project.imageUrl" class="w-full h-full flex items-center justify-center text-text-muted">
+      <i class="fas fa-image text-4xl"></i>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-6 flex flex-col flex-grow">
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-xl font-bold text-text-primary group-hover:text-accent transition-colors duration-300">{{ project.title }}</h3>
+      <div class="flex gap-3 text-text-muted">
+        <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank" aria-label="GitHub Repository" class="hover:text-accent transition-colors duration-300">
+          <i class="fab fa-github text-lg"></i>
+        </a>
+        <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" aria-label="Live Demo" class="hover:text-accent transition-colors duration-300">
+          <i class="fas fa-external-link-alt text-lg"></i>
+        </a>
+      </div>
+    </div>
+
+    <p class="text-text-muted text-sm mb-6 flex-grow">{{ project.description }}</p>
+
+    <div class="flex flex-wrap gap-2 mt-auto">
+      <span *ngFor="let tech of project.techStack" class="text-xs font-mono text-accent-light bg-accent/10 px-2 py-1 rounded">
+        {{ tech }}
+      </span>
+    </div>
+  </div>
+</div>

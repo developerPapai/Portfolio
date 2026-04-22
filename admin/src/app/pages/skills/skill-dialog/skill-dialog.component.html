@@ -1,0 +1,66 @@
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  <div class="bg-primary border border-border rounded-xl shadow-2xl w-full max-w-lg flex flex-col">
+    
+    <div class="p-6 border-b border-border flex justify-between items-center">
+      <h2 class="text-2xl font-bold">{{ skill ? 'Edit Skill' : 'Add Skill' }}</h2>
+      <button (click)="onClose()" class="text-text-muted hover:text-text-primary text-xl">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="p-6 overflow-y-auto flex-grow">
+      <form [formGroup]="skillForm" id="skillForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <div>
+          <label class="block text-sm font-medium text-text-muted mb-2">Skill Name *</label>
+          <input type="text" formControlName="name" class="w-full px-4 py-2 rounded-lg bg-secondary border border-border-subtle text-text-primary outline-none focus:border-accent">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2 sm:col-span-1">
+            <label class="block text-sm font-medium text-text-muted mb-2">Category *</label>
+            <select formControlName="category" class="w-full px-4 py-2 rounded-lg bg-secondary border border-border-subtle text-text-primary outline-none focus:border-accent">
+              <option value="frontend">Frontend</option>
+              <option value="backend">Backend</option>
+              <option value="database">Database</option>
+              <option value="tools">Tools</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label class="block text-sm font-medium text-text-muted mb-2">Proficiency Level (1-100) *</label>
+            <input type="number" formControlName="level" class="w-full px-4 py-2 rounded-lg bg-secondary border border-border-subtle text-text-primary outline-none focus:border-accent">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-text-muted mb-2">Font Awesome Icon Class</label>
+          <input type="text" formControlName="icon" placeholder="e.g. fab fa-angular" class="w-full px-4 py-2 rounded-lg bg-secondary border border-border-subtle text-text-primary outline-none focus:border-accent">
+          <p class="text-xs text-text-muted mt-1">Leave empty if you don't have an icon.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2 sm:col-span-1">
+            <label class="block text-sm font-medium text-text-muted mb-2">Order/Rank (lower is first)</label>
+            <input type="number" formControlName="order" class="w-full px-4 py-2 rounded-lg bg-secondary border border-border-subtle text-text-primary outline-none focus:border-accent">
+          </div>
+          <div class="col-span-2 sm:col-span-1 flex items-center pt-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" formControlName="visible" class="w-4 h-4 accent-accent">
+              <span class="text-sm font-medium text-text-primary">Visible to Public</span>
+            </label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="p-6 border-t border-border flex justify-end gap-4 bg-secondary/50 rounded-b-xl">
+      <button type="button" (click)="onClose()" class="px-6 py-2 rounded font-medium text-text-primary hover:bg-white/5 transition-colors">Cancel</button>
+      <button type="submit" form="skillForm" [disabled]="skillForm.invalid" class="bg-accent text-black px-6 py-2 rounded font-bold hover:bg-accent/90 disabled:opacity-50 transition-colors">
+        {{ skill ? 'Update' : 'Create' }} Skill
+      </button>
+    </div>
+
+  </div>
+</div>
