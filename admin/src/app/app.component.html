@@ -5,8 +5,18 @@
 <ng-template #dashboardLayout>
   <div class="flex h-screen overflow-hidden bg-primary text-text-primary">
 
+    <!-- Mobile Backdrop -->
+    <div 
+      *ngIf="menuOpen" 
+      (click)="toggleMenu()" 
+      class="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+    ></div>
+
     <!-- Sidebar -->
-    <aside class="w-64 bg-secondary border-r border-border hidden md:flex flex-col">
+    <aside 
+      class="fixed inset-y-0 left-0 z-50 w-64 bg-secondary border-r border-border transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 flex flex-col"
+      [class.-translate-x-full]="!menuOpen"
+    >
       <div class="p-6 border-b border-border flex items-center justify-between">
         <div class="text-xl font-bold flex items-center gap-2">
           <span class="text-accent">&lt;</span>
@@ -14,6 +24,9 @@
           <span class="text-accent">/&gt;</span>
         </div>
         <span class="text-[10px] uppercase font-bold tracking-wider text-text-muted bg-primary px-2 py-1 rounded">Admin</span>
+        <button (click)="toggleMenu()" class="md:hidden text-text-muted hover:text-text-primary">
+          <i class="fas fa-times text-lg"></i>
+        </button>
       </div>
 
       <nav class="flex-grow p-4 space-y-2 overflow-y-auto">
@@ -44,9 +57,15 @@
     <!-- Main Content -->
     <div class="flex-grow flex flex-col h-full overflow-hidden">
       <!-- Mobile Header -->
-      <header class="bg-secondary border-b border-border h-16 flex items-center justify-between px-4 md:hidden">
-        <div class="text-lg font-bold">Admin</div>
-        <button class="text-text-muted"><i class="fas fa-bars"></i></button>
+      <header class="bg-secondary border-b border-border h-16 flex items-center justify-between px-4 md:hidden sticky top-0 z-30">
+        <div class="text-lg font-bold flex items-center gap-2">
+          <span class="text-accent">&lt;</span>
+          <span>Papai</span>
+          <span class="text-accent">/&gt;</span>
+        </div>
+        <button (click)="toggleMenu()" class="text-text-primary p-2">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
       </header>
 
       <!-- Content Area -->

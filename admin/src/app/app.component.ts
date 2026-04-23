@@ -15,13 +15,19 @@ export class AppComponent {
   private authService = inject(AuthService);
 
   isLoginPage = true;
+  menuOpen = false;
 
   constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.isLoginPage = event.url.includes('/login');
+      this.menuOpen = false; // Close menu on navigation
     });
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   logout() {
